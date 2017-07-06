@@ -54,11 +54,6 @@ var generateConfig = function generateConfig(config, onlyUsePrefix) {
 		});
 	}
 
-	if (typeof config.headers === "function") {
-		config.headerFn = config.headers;
-		config.headers = {};
-	}
-
 	return {
 		target: urlJoin(config.target || "", "/"),
 		changeOrigin: true,
@@ -91,7 +86,7 @@ var proxyMiddleware = function(config, route) {
 	delete config.routes;
 
 	return function(req, res) {
-		return proxy.web(req, res, (config.headerFn ? merge(config, config.headerFn(req, res)) : config), fallback);
+		return proxy.web(req, res, config, fallback);
 	};
 };
 
